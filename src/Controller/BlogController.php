@@ -14,14 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/blog", name="blog_list")
-     */
-    public function list()
-    {
-        return $this->render('blog/index.html.twig');
-    }
-
-    /**
      * @Route("blog/{slug<[a-z0-9-]+>?article-sans-titre}", name="blog_show")
      */
     public function show($slug)
@@ -29,4 +21,14 @@ class BlogController extends AbstractController
         $result = ucwords(str_replace('-',' ',$slug));
         return $this->render('blog/article.html.twig', ['slug' => $result]);
     }
+
+    /**
+     * @Route("/blog", name="blog_list")
+     */
+    public function list()
+    {
+        return $this->render('blog/index.html.twig');
+    }
+
+
 }
