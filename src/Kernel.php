@@ -99,12 +99,12 @@ class Kernel extends BaseKernel
 
         if ('prod' !== $_SERVER['APP_ENV'] = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : (isset($_ENV['APP_ENV']) ? $_ENV['APP_ENV'] : null)) {
             if (!class_exists(Dotenv::class)) {
-                throw new \RuntimeException('The "APP_ENV" environment variable is not defined. You need to set it or run "composer require symfony/dotenv" to load it from a ".env" file.');
+                throw new \RuntimeException('The "APP_ENV" environment variable is not defined. You need to set it or run "composer require symfony/dotenv" to load it from a ".env.local" file.');
             }
 
             // when using symfony/dotenv v4.2 or higher, this call and the related methods
             // below should be replaced by a call to the new Dotenv::loadEnv() method
-            self::loadEnv(new Dotenv(), \dirname(__DIR__).'/.env');
+            self::loadEnv(new Dotenv(), \dirname(__DIR__).'/.env.local');
         }
 
         $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
