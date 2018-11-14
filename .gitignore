@@ -17,3 +17,8 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 Supprimerait assets/
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
