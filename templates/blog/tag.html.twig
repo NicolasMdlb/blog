@@ -1,21 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Index{% endblock %}
+{% block title %}All Tag{% endblock %}
 
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
-    <h1>All articles from article s table : </h1>
+
+    <h1>All {{ tag.name}} </h1>
     {% for article in articles %}
         <div>
-            <h2>{{ loop.index }} / {{ article.title }} - Category : {{ article.category.name }}</h2>
+            <h1>{{ tag.name }}</h1>
+            <h5>Real article s title : <a href={{ path('blog_show', { 'slug' : (article.title | lower | replace({' ': "-"})) }) }}>
+                    {{ article.title }}</a></h5>
             <p>{{ article.content }}</p>
-            <a href="">
-                Voir Article
-            </a>
         </div>
     {% endfor %}
     <a href="{{ path('homepage') }}">
         Back to homepage.
     </a>
+
 {% endblock %}

@@ -12,8 +12,18 @@
         <p>{{ article.content }}</p>
     </div>
 
-    <a href="{{ path('homepage') }}">
-        Back to homepage.
+    <strong>Tags :</strong>
+    <ul>
+        {% for tag in tags %}
+            <li><a href={{ path('blog_tag', { 'tagName' : (tag.name | lower | replace({' ': "-"})) }) }}>
+                    {{ tag.name }}</a></li>
+        {% else %}
+            <li>No tags for this article</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('blog_index') }}">
+        Back to Blog.
     </a>
 
 {% endblock %}

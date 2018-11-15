@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Article;
-use App\Repository\CategoryRepository;
+use App\Entity\Tag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,6 +67,8 @@ class BlogController extends AbstractController
             ->getRepository(Article::class)
             ->findOneBy(['title' => mb_strtolower($slug)]);
 
+        $tags = $article->getTags();
+
         if (!$article) {
             throw $this->createNotFoundException(
                 'No article with ' . $slug . ' title, found in article\'s table.'
@@ -77,7 +79,8 @@ class BlogController extends AbstractController
             'blog/show.html.twig',
             [
                 'article' => $article,
-                'slug' => $slug
+                'slug' => $slug,
+                'tags' => $tags
             ]
         );
     }
@@ -86,7 +89,7 @@ class BlogController extends AbstractController
      * @Route("/blog/category/{categoryName}/all", name="blog_showcat")
      * @return Response A response instance
      */
-    public function showAllByCategory($categoryName) : Response
+    public function showAllByCategory($categoryName): Response
     {
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
@@ -119,6 +122,25 @@ class BlogController extends AbstractController
             'blog/category.html.twig',
             ['articles' => $articles,
                 'category' => $category]
+        );
+    }
+
+    /**
+     * @Route("blog/tag/{tagName}", name="blog_tag")
+     * @return Response A response instance
+     */
+    public function showByTag(String $tagName) : Response
+    {
+        $tag = $this->getDoctrine()
+            ->getRepository(Tag::class)
+            ->findOneByName($tagName);
+
+        $articles = $tag->getArticles();
+
+        return $this->render(
+            'blog/tag.html.twig',
+            ['articles' => $articles,
+                'tag' => $tag]
         );
     }
 }
