@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Article;
+use App\Repository\CategoryRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,20 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/blog", name="blog_list")
-     */
-    public function list()
-    {
-        return $this->render('blog/index.html.twig');
-    }
-
-    /**
      * Show all row from article's entity
      *
-     * @Route("/", name="blog_index")
+     * @Route("/blog", name="blog_index")
      * @return Response A response instance
      */
-    public function index() : Response
+    public function index(): Response
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
@@ -53,12 +46,12 @@ class BlogController extends AbstractController
      *
      * @param string $slug The slugger
      *
-     * @Route("/{slug<^[a-z0-9-]+$>}",
+     * @Route("/blog/{slug<^[a-z0-9-]+$>}",
      *     defaults={"slug" = null},
      *     name="blog_show")
-     *  @return Response A response instance
+     * @return Response A response instance
      */
-    public function show($slug) : Response
+    public function show($slug): Response
     {
         if (!$slug) {
             throw $this
@@ -66,8 +59,8 @@ class BlogController extends AbstractController
         }
 
         $slug = preg_replace('/-/',
-                            ' ', ucwords(trim(strip_tags($slug)),
-                            "-")
+            ' ', ucwords(trim(strip_tags($slug)),
+                "-")
         );
 
         $article = $this->getDoctrine()
@@ -76,7 +69,7 @@ class BlogController extends AbstractController
 
         if (!$article) {
             throw $this->createNotFoundException(
-                'No article with '.$slug.' title, found in article\'s table.'
+                'No article with ' . $slug . ' title, found in article\'s table.'
             );
         }
 
@@ -84,24 +77,43 @@ class BlogController extends AbstractController
             'blog/show.html.twig',
             [
                 'article' => $article,
-                'slug' => $slug,
+                'slug' => $slug
             ]
         );
     }
 
     /**
-     * @Route("/category/{category}", name="category")
+     * @Route("/blog/category/{categoryName}/all", name="blog_showcat")
      * @return Response A response instance
      */
-    public function showByCategory(String $category)
+    public function showAllByCategory($categoryName) : Response
     {
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
-            -> findOneByName($category);
+            ->findOneByName($categoryName);
+
+        $articles = $category->getArticles();
+
+        return $this->render(
+            'blog/showcat.html.twig',
+            ['articles' => $articles,
+                'category' => $category]
+        );
+    }
+
+    /**
+     * @Route("/blog/category/{categoryName}", name="category")
+     * @return Response A response instance
+     */
+    public function showByCategory(String $categoryName)
+    {
+        $category = $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findOneByName($categoryName);
 
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
-            -> findBy(['category' => $category], ['id' => 'DESC'], 3);
+            ->findBy(['category' => $category], ['id' => 'DESC'], 3);
 
         return $this->render(
             'blog/category.html.twig',

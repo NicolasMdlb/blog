@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ category.name }}{% endblock %}
+{% block title %}All categories{% endblock %}
 
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
-
-    <h1>All {{ category.name}} </h1>
+    <h1>All {{ category.name }} </h1>
     {% for article in articles %}
         <div>
             <h1>{{ article.id }}</h1>
@@ -14,8 +13,10 @@
             <p>{{ article.content }}</p>
         </div>
     {% endfor %}
+
     <a href="{{ path('homepage') }}">
         Back to homepage.
     </a>
+
 
 {% endblock %}
