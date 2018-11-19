@@ -8,13 +8,15 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Category;
 use App\Entity\Article;
 use App\Entity\Tag;
-use App\Form\ArticleSearchType;
+use App\Form\ArticleType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class BlogController extends AbstractController
@@ -25,14 +27,8 @@ class BlogController extends AbstractController
      * @Route("/blog", name="blog_index")
      * @return Response A response instance
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $form = $this->createForm(
-            ArticleSearchType::class,
-            null,
-            ['method' => Request::METHOD_GET]
-        );
-
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
             ->findAll();
@@ -43,6 +39,19 @@ class BlogController extends AbstractController
             );
         }
 
+        $article = new article;
+        $form = $this->createForm(articleType::class, $article, ['method' => Request::METHOD_GET])
+            ->add('title', TextType::class)
+            ->add('content', TextType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $article = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($article);
+            $em->flush();
+        }
         return $this->render(
             'blog/index.html.twig',
             ['articles' => $articles,
@@ -138,7 +147,7 @@ class BlogController extends AbstractController
      * @Route("blog/tag/{tagName}", name="blog_tag")
      * @return Response A response instance
      */
-    public function showByTag(String $tagName) : Response
+    public function showByTag(String $tagName): Response
     {
         $tag = $this->getDoctrine()
             ->getRepository(Tag::class)
