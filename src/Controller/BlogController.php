@@ -11,6 +11,8 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Article;
 use App\Entity\Tag;
+use App\Form\ArticleSearchType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +27,12 @@ class BlogController extends AbstractController
      */
     public function index(): Response
     {
+        $form = $this->createForm(
+            ArticleSearchType::class,
+            null,
+            ['method' => Request::METHOD_GET]
+        );
+
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
             ->findAll();
@@ -37,7 +45,8 @@ class BlogController extends AbstractController
 
         return $this->render(
             'blog/index.html.twig',
-            ['articles' => $articles]
+            ['articles' => $articles,
+                'form' => $form->createView(),]
         );
     }
 

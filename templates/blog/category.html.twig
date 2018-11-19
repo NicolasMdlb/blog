@@ -1,19 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ category.name }}{% endblock %}
+{% block title %}Add Category{% endblock %}
 
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
 
-    <h1>All {{ category.name}} </h1>
-    {% for article in articles %}
-        <div>
-            <h1>{{ article.id }}</h1>
-            <h5>Real article s title : {{ article.title }}</h5>
-            <p>{{ article.content }}</p>
-        </div>
-    {% endfor %}
+    <h1>Add Category</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+        <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
     <a href="{{ path('homepage') }}">
         Back to homepage.
     </a>
