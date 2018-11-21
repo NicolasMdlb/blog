@@ -137,7 +137,7 @@ class BlogController extends AbstractController
             ->findBy(['category' => $category], ['id' => 'DESC'], 3);
 
         return $this->render(
-            'blog/category.html.twig',
+            'blog/showcat.html.twig',
             ['articles' => $articles,
                 'category' => $category]
         );

@@ -15,7 +15,7 @@
     <strong>Tags :</strong>
     <ul>
         {% for tag in tags %}
-            <li><a href={{ path('blog_tag', { 'tagName' : (tag.name | lower | replace({' ': "-"})) }) }}>
+            <li><a href={{ path('blog_tag', { 'tagName' : (tag.name | lower | replace({' ': "-"}) ) }) }}>
                     {{ tag.name }}</a></li>
         {% else %}
             <li>No tags for this article</li>

@@ -10,7 +10,7 @@
     {% for article in articles %}
         <div>
             <h1>{{ tag.name }}</h1>
-            <h5>Real article s title : <a href={{ path('blog_show', { 'slug' : (article.title | lower | replace({' ': "-"})) }) }}>
+            <h5>Real article s title : <a href={{ path('blog_show', { 'slug' : (article.title | lower | replace({' ': "-", '.': ""})) }) }}>
                     {{ article.title }}</a></h5>
             <p>{{ article.content }}</p>
         </div>
