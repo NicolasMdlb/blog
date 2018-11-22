@@ -12,6 +12,7 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
@@ -34,8 +35,18 @@ class CategoryController extends AbstractController
             $em->persist($category);
             $em->flush();
         }
-        return $this->render('blog/category.html.twig', array(
+        return $this->render('category/category.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @Route("/category/{id}", name="category_id")
+     * @param Category $category
+     */
+    public function show(Category $category): Response
+    {
+        $articles = $category->getArticles();
+        return $this->render('category/categoryId.html.twig', ['category' => $category, 'articles' => $articles]);
     }
 }

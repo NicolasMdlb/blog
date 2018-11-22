@@ -99,7 +99,6 @@ class Article
             $this->tags[] = $tag;
             $tag->addArticle($this);
         }
-
         return $this;
     }
 

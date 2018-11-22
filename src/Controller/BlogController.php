@@ -13,7 +13,6 @@ use App\Entity\Category;
 use App\Entity\Article;
 use App\Entity\Tag;
 use App\Form\ArticleType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,7 +84,7 @@ class BlogController extends AbstractController
             ->getRepository(Article::class)
             ->findOneBy(['title' => mb_strtolower($slug)]);
 
-        $tags = $article->getTags();
+        $tags = $article->getTag();
 
         if (!$article) {
             throw $this->createNotFoundException(
