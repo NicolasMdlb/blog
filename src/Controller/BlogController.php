@@ -84,7 +84,7 @@ class BlogController extends AbstractController
             ->getRepository(Article::class)
             ->findOneBy(['title' => mb_strtolower($slug)]);
 
-        $tags = $article->getTag();
+        $tags = $article->getTags();
 
         if (!$article) {
             throw $this->createNotFoundException(

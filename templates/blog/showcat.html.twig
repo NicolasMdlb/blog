@@ -11,7 +11,7 @@
             <h1>{{ article.id }}</h1>
             <h5>Real article s title : {{ article.title }}</h5>
             <p>{{ article.content }}</p>
-            <a href={{ path('blog_show', { 'slug' : (article.title | lower | replace({' ': "-", '.': ""})) }) }}>
+            <a href={{ path('blog_show', { 'slug' : (article.title | lower | replace({' ': "-"})) }) }}>
                 Voir Article
             </a>
         </div>

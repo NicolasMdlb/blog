@@ -8,6 +8,15 @@
     <h1>Category {{ category.name }}</h1>
 
     {% for article in articles %}
-        {{ article.title }}
+        <div>
+            {{ article.title }}
+            <a href={{ path('blog_show', { 'slug' : (article.title | lower | replace({' ': "-", '.': ""})) }) }}>
+                Voir Article
+            </a>
+        </div>
     {% endfor %}
+    <a href="{{ path('blog_index') }}">
+        Back to Blog.
+    </a>
+
 {% endblock %}
