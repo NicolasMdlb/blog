@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\Slugify;
 
 class BlogController extends AbstractController
 {
@@ -26,7 +27,7 @@ class BlogController extends AbstractController
      * @Route("/blog", name="blog_index")
      * @return Response A response instance
      */
-    public function index(Request $request): Response
+    public function index(Request $request, Slugify $slugify): Response
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
@@ -38,7 +39,7 @@ class BlogController extends AbstractController
             );
         }
 
-        $article = new article;
+             $article = new article;
         $form = $this->createForm(articleType::class, $article, ['method' => Request::METHOD_GET])
             ->add('title', TextType::class)
             ->add('content', TextType::class);
@@ -47,6 +48,7 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted()) {
             $article = $form->getData();
+            $article->setSlug($slugify->generate($article->getTitle()));
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();

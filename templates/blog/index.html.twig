@@ -17,7 +17,7 @@
         <div>
             <h2>{{ loop.index }} / {{ article.title }} - Category : {{ article.category.name }}</h2>
             <p>{{ article.content }}</p>
-            <a href={{ path('blog_show', { 'slug' : (article.title | lower | replace({' ': "-", '.': ""})) }) }}>
+            <a href={{ path('blog_show', { 'slug': article.slug | lower}) }}>
                 Voir Article
             </a>
         </div>
