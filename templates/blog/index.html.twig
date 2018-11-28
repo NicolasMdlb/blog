@@ -2,27 +2,30 @@
 
 {% block title %}Index{% endblock %}
 
-{% block stylesheets %}{% endblock %}
-
 {% block body %}
-    <h1>All articles from article s table : </h1>
-    <div>
-        {{ form_start(form) }}
-        {{ form_row(form) }}
-        <button type="submit" name="btnSearch">Save</button>
-        {{ form_end(form) }}
-    </div>
-
-    {% for article in articles %}
-        <div>
-            <h2>{{ loop.index }} / {{ article.title }} - Category : {{ article.category.name }}</h2>
-            <p>{{ article.content }}</p>
-            <a href={{ path('blog_show', { 'slug': article.slug | lower}) }}>
-                Voir Article
-            </a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1>All articles from article s table : </h1>
+            <div>
+                {{ form_start(form) }}
+                {{ form_row(form) }}
+                <button type="submit" name="btnSearch">Save</button>
+                {{ form_end(form) }}
+            </div>
         </div>
-    {% endfor %}
-    <a href="{{ path('homepage') }}">
-        Back to homepage.
-    </a>
+        <div class="row justify-content-center">
+                {% for article in articles %}
+                <div class="col-4">
+                    <h2>{{ article.id }} / {{ article.title }} - Category : {{ article.category.name }}</h2>
+                    <p>{{ article.content }}</p>
+                    <a href={{ path('blog_show', {'id' : article.id, 'slug': article.slug | lower}) }}>
+                        Voir Article
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{{ path('homepage') }}">
+            Back to homepage.
+        </a>
+    </div>
 {% endblock %}
