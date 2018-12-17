@@ -47,7 +47,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="category_show", methods="GET")
+     * @Route("/{id}-{name}", name="category_show", methods="GET")
      */
     public function show(Category $category): Response
     {
@@ -75,7 +75,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="category_delete", methods="DELETE")
+     * @Route("/{id}-{name}", name="category_delete", methods="DELETE")
      */
     public function delete(Request $request, Category $category): Response
     {

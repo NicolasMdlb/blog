@@ -27,7 +27,11 @@ class BlogController extends AbstractController
      * @Route("/blog", name="blog_index")
      * @return Response A response instance
      */
-    public function index(Request $request, Slugify $slugify): Response
+    public function index(
+        Request $request,
+        Slugify $slugify,
+        \Swift_Mailer $mailer
+    ): Response
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
@@ -40,7 +44,7 @@ class BlogController extends AbstractController
         }
 
         $article = new article;
-        $form = $this->createForm(articleType::class, $article, ['method' => Request::METHOD_GET])
+        $form = $this->createForm(ArticleType::class, $article, ['method' => Request::METHOD_GET])
             ->add('title', TextType::class)
             ->add('content', TextType::class);
 
@@ -52,12 +56,16 @@ class BlogController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
+
+            $message = (new \Swift_Message('Un nouvel article vient d\'être publié !'))
+                ->setFrom('nicolas.mdlb@gmail.com')
+                ->setTo('nicolas.mdlb@gmail.com')
+                ->setBody($this->renderView('email/notification.html.twig', ['article' => $article]),
+            'text/html');
+            $mailer->send($message);
+            return $this->render('blog/index.html.twig', ['articles' => $articles, 'form' => $form->createView(),]);
         }
-        return $this->render(
-            'blog/index.html.twig',
-            ['articles' => $articles,
-                'form' => $form->createView(),]
-        );
+        return $this->render('blog/index.html.twig', ['articles' => $articles, 'form' => $form->createView(),]);
     }
 
     /**

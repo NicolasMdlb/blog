@@ -18,7 +18,7 @@
                 <div class="col-4">
                     <h2>{{ article.id }} / {{ article.title }} - Category : {{ article.category.name }}</h2>
                     <p>{{ article.content }}</p>
-                    <a href={{ path('blog_show', {'id' : article.id, 'slug': article.slug | lower}) }}>
+                    <a href={{ path('blog_show', {'id': article.id, 'slug': article.slug | lower}) }}>
                         Voir Article
                     </a>
                 </div>

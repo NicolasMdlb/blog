@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Template mailing Alsacreations</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width">
+    <style type="text/css">
+        /* Fonts and Content */
+        body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; font-size:14px; }
+        body { background-color: #2A374E; margin: 0; padding: 0; -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
+        h2{ padding-top:12px; /* ne fonctionnera pas sous Outlook 2007+ */color:#0E7693; font-size:22px; }
+    </style>
+
+</head>
+<body>
+
+    <h1>Le nouvel article<a href="{{ url('blog_show', {'id': article.id, 'slug': article.slug | lower}) }}">
+            {{ article.title }}</a></h1>
+    <p>{{ article.content }}</p>
+
+</body>
+</html>
